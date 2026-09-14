@@ -1,0 +1,17 @@
+name: scflowdiff
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pytorch=2.5.1
+  - numpy=1.26.4
+  - pandas>=2.0,<2.2
+  - scipy>=1.11,<1.12
+  - scikit-learn=1.7.2
+  - pyarrow>=14,<26
+  - h5py>=3.10
+  - pip:
+      - -e ".[train]"

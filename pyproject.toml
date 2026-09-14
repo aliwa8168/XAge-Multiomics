@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scflowdiff"
+version = "0.1.0"
+description = "Bidirectional single-cell RNA-ATAC translation with flow matching"
+readme = "README.md"
+requires-python = ">=3.10,<3.12"
+license = {text = "LicenseRef-Pending"}
+dependencies = [
+  "anndata>=0.10",
+  "h5py>=3.10",
+  "joblib==1.5.3",
+  "mudata>=0.2",
+  "numpy==1.26.4",
+  "pandas>=2.0,<2.2",
+  "pyarrow>=14,<26",
+  "pyyaml>=6",
+  "scikit-learn==1.7.2",
+  "scipy>=1.11,<1.12",
+  "torch>=2.5,<2.6",
+]
+
+[project.optional-dependencies]
+train = [
+  "cellarium-ml==0.0.8",
+  "pytorch-lightning>=2.5,<2.6",
+  "scvi-tools>=1.2,<1.3",
+]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+scflowdiff-datp-predict = "scflowdiff.cli.datp_predict:main"
+scflowdiff-run-translation = "scflowdiff.cli.run_translation:main"
+scflowdiff-run-immune-age = "scflowdiff.cli.run_immune_age:main"
+scflowdiff-run-immune-age-pipeline = "scflowdiff.cli.run_immune_age_pipeline:main"
+scflowdiff-train-datp = "scflowdiff.cli.train_datp:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["scflowdiff*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

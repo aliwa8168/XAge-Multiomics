@@ -1,0 +1,100 @@
+task: immune_age
+dataset: cima
+dataset_path: data/cima/cima_paired_max2000_per_donor_seed42.h5mu
+data_root: data/cima/downstream/immune_age/seed42
+output_root: outputs/downstream/immune_age/cima/seed42_donor_split_316_78
+clock_root: pretrained/downstream/immune_age/seed42/clocks
+seed: 42
+scflowdiff:
+  stage1_steps: 30000
+  stage2_steps: 30000
+  sex_specific: true
+  batch_size: 32
+  precision: bf16_mixed
+  stage1_validation_every: 5000
+  stage1_validation_max_batches: 0
+  stage2_validation_every: 1000
+  stage2_validation_max_batches: 0
+  task_probabilities:
+    rna_to_atac: 0.4
+    atac_to_rna: 0.4
+    joint: 0.2
+  checkpoint_selection:
+    rna_to_atac_weight: 0.5
+    atac_to_rna_weight: 0.5
+    mmd_cells: 256
+    mmd_steps: 5
+    mmd_weight: 1.0
+    selected_weight_kind: best_ema
+split:
+  strategy: frozen_donor
+  split_column: benchmark_split
+  development: 316
+  sealed_test: 78
+sexes:
+  female:
+    development: 178
+    train: 160
+    validation: 18
+    sealed_test: 46
+    split_csv: data/cima/downstream/immune_age/seed42/splits/female_split.csv
+    feature_contract: data/cima/downstream/immune_age/seed42/female/feature_contract.json
+  male:
+    development: 138
+    train: 124
+    validation: 14
+    sealed_test: 32
+    split_csv: data/cima/downstream/immune_age/seed42/splits/male_split.csv
+    feature_contract: data/cima/downstream/immune_age/seed42/male/feature_contract.json
+directions:
+  rna_to_atac:
+    source_modality: rna
+    target_modality: atac
+    target_contract: target_atac_feature_order.csv
+    external_cohort: rna_only27
+    baseline_clock: RNA
+    final_clock: Fusion
+  atac_to_rna:
+    source_modality: atac
+    target_modality: rna
+    target_contract: target_rna_feature_order.csv
+    external_cohort: atac_only7
+    baseline_clock: ATAC
+    final_clock: Fusion
+external_cohorts:
+  rna_only27:
+    path: data/rna_only/cima_rna_only_27_donors.h5ad
+    donor_key: sample_id
+    sex_key: sex_standardized
+    age_key: age_numeric
+    cell_type_key: cell_type_L3
+    expected_donors: 27
+    transform_contract: data/cima/downstream/immune_age/seed42/rna_external_transform.csv.gz
+  atac_only7:
+    path: data/atac_only/cima_atac_only_7_donors.h5ad
+    donor_key: sample_id
+    sex_key: sex
+    age_key: age
+    cell_type_key: transfer_L3
+    expected_donors: 7
+flow_hidden:
+  euler_steps: 50
+  min_cells_per_donor_cell_type: 20
+  max_cells_per_donor_cell_type: 32
+  batch_size: 128
+evaluation:
+  primary_metric: MAE
+  secondary_metrics: [median_AE, RMSE, Pearson_R, R2, prediction_SD]
+  age_access_gate: after_target_prediction_locked
+  compare_source_only_clock: true
+datp:
+  folds: 5
+  flow_pca_components: 32
+  global_pca_components: 16
+  local_pca_components: 8
+  ridge_alpha: 10.0
+  pls_components: [1, 2, 4, 8, 12]
+clocks:
+  mode: frozen_predict_only
+  fit_calls_allowed: 0
+  feature_selection_calls_allowed: 0

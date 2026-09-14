@@ -1,0 +1,5 @@
+Dataset: cima_paired_max2000_per_donor_seed42.h5mu
+Download: https://huggingface.co/datasets/aliwa8168/XAge-Multiomics/resolve/main/cima_paired_max2000_per_donor_seed42.h5mu
+Place the downloaded file at: data/cima/cima_paired_max2000_per_donor_seed42.h5mu
+The path is relative to the project root.
+Alternatively, run: bash scripts/download_data.sh

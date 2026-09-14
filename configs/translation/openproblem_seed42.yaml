@@ -1,0 +1,51 @@
+task: translation
+dataset: openproblem
+dataset_path: data/openproblem/openproblem_filtered.h5mu
+output_root: outputs/translation/openproblem/seed42_cell_split_80_10_10
+seed: 42
+split:
+  strategy: random_cell
+  train: 0.8
+  validation: 0.1
+  test: 0.1
+stage1:
+  max_steps: 30000
+  batch_size: 32
+  precision: bf16_mixed
+  validation_every: 5000
+  validation_max_batches: 0
+stage2:
+  max_steps: 30000
+  batch_size: 32
+  validation_every: 1000
+  validation_max_batches: 0
+  task_probabilities:
+    rna_to_atac: 0.4
+    atac_to_rna: 0.4
+    joint: 0.2
+  checkpoint_selection:
+    rna_to_atac_weight: 0.5
+    atac_to_rna_weight: 0.5
+    mmd_cells: 256
+    mmd_steps: 5
+    mmd_weight: 1.0
+    compare_raw_and_ema: true
+    selected_weight_kind: best_ema
+directions: [rna_to_atac, atac_to_rna]
+feature_contract:
+  rna_features: 13431
+  atac_features: 36553
+  feature_sampling: false
+  cell_sampling: false
+evaluation:
+  split: test
+  cell_sampling: false
+  feature_sampling: false
+  distribution_projection:
+    method: countsketch_joint_pca
+    sketch_components: 512
+    pca_components: 50
+    seed: 123
+  atac_accuracy: bernoulli_sample
+  cell_type_min_cells: 30
+  summary_schema: cima_translation_full_feature_v1

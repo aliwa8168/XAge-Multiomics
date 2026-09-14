@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "seed": 42,
+  "strategy": "frozen_donor_train_validation_sealed_test",
+  "split_column": "benchmark_split",
+  "pooled": {
+    "development": 316,
+    "sealed_test": 78,
+    "donors": 394
+  },
+  "sexes": {
+    "female": {
+      "path": "data/cima/downstream/immune_age/seed42/splits/female_split.csv",
+      "sha256": "f2d50f95fd19d5278137150e58718e756f0a5a7525881d6b86e42f07b2fb9d12",
+      "donors": 224,
+      "counts": {
+        "sealed_test": 46,
+        "train": 160,
+        "validation": 18
+      },
+      "unique_sample_ids": 224
+    },
+    "male": {
+      "path": "data/cima/downstream/immune_age/seed42/splits/male_split.csv",
+      "sha256": "6c1475f49b24cb95867ceb1cf24a2809de5ba4b7188cbf6e235d0ae604efdb9a",
+      "donors": 170,
+      "counts": {
+        "sealed_test": 32,
+        "train": 124,
+        "validation": 14
+      },
+      "unique_sample_ids": 170
+    }
+  }
+}
