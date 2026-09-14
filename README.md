@@ -12,11 +12,7 @@ translation and downstream multiomic immune-age prediction.
   frozen immune-age clocks. Observed RNA plus predicted ATAC, or predicted RNA
   plus observed ATAC, are then used by the Fusion clock.
 
-This repository includes CIMA and OpenProblem translation experiments, and
-CIMA immune-age evaluation on 78 paired-modality test donors, 27 RNA-only
-donors and 7 ATAC-only donors. Stage 1/2 use 30,000 steps each. Translation uses
-a seed-42 cell-level 80/10/10 split; immune-age prediction uses the fixed
-seed-42 split of 316 development and 78 test donors.
+
 
 ## Install
 
